@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html lang="en" ng-app="recipeApp">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.8">
+	<title>Recipe</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/styles.css">
+	<style>.ng-cloak { display: none; }</style>
+</head>
+<body ng-controller="recipeCtrl" class="ng-cloak" ng-cloak>
+	<div class="recipe-list" ng-class="{'separate-up':openTop}">
+		<div class="recipe-container" ng-class="{'recipe-container-open':recipe.open, 'recipe-container-bottom':($last || (!$last && recipeList[$index+1].open)) && !recipe.open}" ng-repeat="recipe in recipeList">
+			<div class="recipe-list-item" ng-click="toggleOpen(recipe, $first)" ng-class="{'recipe-list-item-active':recipe.active, 'recipe-list-item-open':recipe.open}">
+				<div class="recipe-list-item-icon dessert-icon"> </div>
+				<div class="recipe-list-item-title" ng-class="{'title-open':recipe.open}">{{recipe.name}}</div>
+				<div class="recipe-list-item-btns">
+					<div class="recipe-list-item-btn print-icon"></div>
+					<div class="recipe-list-item-btn edit-icon"></div>
+				</div>
+				<div class="recipe-list-item-detail">
+					Preheat oven to 400F. Mix ingredients in large bowl.Preheat oven to 400F. Mix ingredients in large bowl.Preheat oven to 400F. Mix ingredients in large bowl.Preheat oven to 400F. Mix ingredients in large bowl.
+				</div>
+			</div>
+			<div collapse="!recipe.open" class="recipe-body"> 
+				<div class="recipe-section-heading"><strong>Ingredients:</strong></div>
+				<div class="ingredients-list well">
+					<div class="ingredient">
+						<span class="ingredient-qty">5</span>
+						<span class="ingredient-unit">t</span>
+						<span class="ingredient-name">Salt</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="js/angular.min.js"></script>
+	<script src="js/ui-bootstrap-tpls-0.12.0.min.js"></script>
+	<!-- <script src="js/bootstrap.min.js"></script> -->
+	<script src="js/recipe.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+body {
+	background-color: #e7e7e7;
+}
+
+.recipe-list {
+	width: 95%;
+	margin: 50px auto 0 auto;
+	transition: margin 0.15s ease;
+}
+
+.recipe-container {
+	transition: margin 0.15s ease, width 0.15s ease;
+	width: 97%;
+	margin: 1px auto 1px auto;
+	overflow: hidden;
+}
+
+.recipe-container-bottom {
+	box-shadow: 0 5px 4px -3px #999;
+}
+
+.recipe-container-open {
+	margin: 50px auto 50px auto;
+	width: 100%;
+	box-shadow: 0 0 12px 2px #787878;
+}
+
+.recipe-list-item {
+	background-color: #fff;
+	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+	height: 45px;
+	line-height: 45px;
+	cursor: pointer;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.title-open {
+	font-weight: bold;
+}
+
+.recipe-list-item:hover .recipe-list-item-btns {
+	display: block;
+}
+
+.recipe-list-item-active {
+	border-left: 3px solid crimson;
+}
+
+.recipe-list-item-open {
+	border-right: 0;
+}
+
+.recipe-list-item-active .recipe-list-item-btns {
+	display: block;
+}
+
+.recipe-body {
+	margin-top: 1px;
+	overflow: hidden;
+	background-color: #fff;
+}
+
+.separate-up {
+	margin: 0 auto 0 auto;
+}
+
+.recipe-list-item-icon {
+	width: 45px;
+	height: 100%;
+	margin-right: 5px;
+	float: left;
+	background-repeat: no-repeat;
+}
+
+.recipe-list-item-title {
+	color: #212121;
+	min-width: 160px;
+	float: left;
+	margin-right: 40px;
+}
+
+.recipe-list-item-detail {
+	width: auto;
+	overflow: hidden;
+	color: #999;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-right: 10px;
+}
+
+.recipe-list-item-btns {
+	display: none;
+	width: 95px;
+	height: 100%;
+	float: right;
+}
+
+.recipe-list-item-btn {
+	display: inline-block;
+	width: 45px;
+	height: 100%;
+	background-repeat: no-repeat;
+}
+
+.dessert-icon {
+	background-image: url('../images/dessert_icon.png');
+}
+
+.print-icon {
+	background-image: url('../images/print_icon.png');
+}
+
+.edit-icon {
+	background-image: url('../images/edit_icon.png');
+}
+
+.recipe-section-heading {
+	font-size: 100%;
+	font-weight: bold;
+	margin: 20px 0 5px 20px;
+}
+
+.ingredients-list {
+	margin: 0 20px 20px 20px;
+}
+
+.ingredient {
+
+}
+
+.ingredient-qty {
+
+}
+
+.ingredient-unit {
+
+}
+
+.ingredient-name {
+
+}
