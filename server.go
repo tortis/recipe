@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -31,5 +32,5 @@ func main() {
 	flag.Parse()
 	http.Handle("/", StaticLoggerHandler("public"))
 	log.Printf("Starting server on port %d.\n", *port)
-	log.Fatal(http.ListenAndServe(":80", nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
 }
