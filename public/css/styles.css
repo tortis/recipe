@@ -135,17 +135,23 @@ body {
 }
 
 .ingredient {
-
+	margin: 3px 0 3px 0;
 }
 
 .ingredient-qty {
-
+	min-width: 40px;
+	display: inline-block;
 }
 
 .ingredient-unit {
-
+	min-width: 30px;
+	display: inline-block;
 }
 
 .ingredient-name {
 
+}
+
+.instructions {
+	margin: 0 25px 20px 25px;
 }

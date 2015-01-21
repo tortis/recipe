@@ -24,14 +24,17 @@
 				</div>
 			</div>
 			<div collapse="!recipe.open" class="recipe-body"> 
-				<div class="recipe-section-heading"><strong>Ingredients:</strong></div>
-				<div class="ingredients-list well">
-					<div class="ingredient">
-						<span class="ingredient-qty">5</span>
-						<span class="ingredient-unit">t</span>
-						<span class="ingredient-name">Salt</span>
+				<div class="ingredient-section" ng-repeat="ings in recipe.ingredients">
+					<div class="recipe-section-heading"><strong>{{ings.section}}</strong></div>
+					<div class="container-fluid ingredients-list well">
+						<div class="col-sm-6 ingredient" ng-repeat="ing in ings.ingredients">
+							<span class="ingredient-qty">{{ing.qty}}</span>
+							<span class="ingredient-unit">{{ing.unit}}</span>
+							<span class="ingredient-name">{{ing.name}}</span>
+						</div>
 					</div>
 				</div>
+				<div class="instructions">{{recipe.instructions}}</div>
 			</div>
 		</div>
 	</div>
