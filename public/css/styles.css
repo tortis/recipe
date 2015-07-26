@@ -1,15 +1,96 @@
 html, body {
 	height: 100%;
-	margin: 0;
+	margin: 0 0 0 0;
 }
 
 body {
 	background-color: #e7e7e7;
 }
 
+/*******************************************************************************
+ *                              Search Bar Style                               *
+ ******************************************************************************/
+.bar {
+    position: fixed;
+    top: 0;
+    height: 55px;
+    width: 100%;
+    background-color: #4285f4;
+    box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+}
+
+.bar-brand {
+    height: 55px;
+    margin: 0 50px 0 20px;
+    line-height: 55px;
+    color: white;
+    font-size: 150%;
+    width: 200px;
+    float: left;
+}
+
+.bar-search {
+    width: auto;
+    overflow: hidden;
+    height: 55px;
+    margin-right: 150px;
+}
+
+.bar-search-inner {
+    margin: 9px;
+    background: rgba(255,255,255,.15);
+    height: 37px;
+    border-radius: 2px;
+}
+
+.bar-search-inner:hover {
+    background: rgba(255,255,255,.25);
+}
+
+.bar-search-head {
+    float: left;
+    font-size: 1.2em%;
+    font-weight: 200;
+    color: white;
+    height: 37px;
+    padding: 0 20px 0 20px;
+    line-height: 37px;
+}
+
+.bar-search-body {
+    overflow: hidden;
+}
+
+.bar-search-body input {
+    border: 0 none;
+    background: none;
+    padding: 0;
+    height: 37px;
+    font-size: 1.2em;
+    box-sizing: border-box;
+    color: white;
+    outline: none;
+    width: 100%;
+}
+
+::-webkit-input-placeholder {
+    color: white;
+}
+:-moz-placeholder {
+    color: white;
+}
+::-moz-placeholder {
+    color: white;
+}
+:-ms-input-placeholder {
+    color: white;
+}
+
+
+
 .recipe-list {
 	width: 95%;
-	margin: 50px auto 0 auto;
+	margin: 100px auto 0 auto;
 	transition: margin 0.15s ease;
 }
 
