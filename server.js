@@ -1,3 +1,9 @@
+// Command line falgs
+var flags    = require('flags');
+flags.defineInteger('port', 8080, 'Port the app will run on.');
+flags.defineString('meta', 'meta.json', 'File where metadata is saved');
+flags.parse();
+
 var restify  = require('restify');
 var mongoose = require('mongoose');
 var handlers = require('./handlers');
@@ -24,12 +30,12 @@ server.get  ( '/api/recipes'           , handlers.recipes.search);
 server.get  ( '/api/recipes/:id/print' , handlers.recipes.print);
 
 // Static file handler
-server.get    ( '/.*'             , restify.serveStatic({
+server.get( '/.*', restify.serveStatic({
     directory: './public',
     default:   'index.html'
 }));
 
 // Start server
-server.listen(8080, function() {
+server.listen(flags.get('port'), function() {
     console.log('%s listening at %s', server.name, server.url);
 });

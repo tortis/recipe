@@ -1,9 +1,10 @@
-var fs  = require('fs');
-var Set = require('collections/set');
+var fs    = require('fs');
+var Set   = require('collections/set');
+var flags = require('flags');
 
 function loadMetadata() {
     exports.data = {};
-    fs.readFile('meta.json', 'utf8', function(err, data) {
+    fs.readFile(flags.get('meta'), 'utf8', function(err, data) {
         if (err) {
             console.log(err);
             console.log('Proceeding with empty metadata');
@@ -13,17 +14,17 @@ function loadMetadata() {
             var d = JSON.parse(data);
             exports.data.tags = new Set(d.tags);
             exports.data.categories = new Set(d.categories);
-            console.log('meta.json loaded');
+            console.log(flags.get('meta')+' loaded');
         }
     });
 }
 
 function saveMetadata() {
-    fs.writeFile('meta.json', JSON.stringify(exports.data, null, 4), function(err) {
+    fs.writeFile(flags.get('meta'), JSON.stringify(exports.data, null, 4), function(err) {
         if (err) {
             console.log(err);
         } else {
-            console.log('meta.json saved');
+            console.log(flags.get('meta')+' saved');
         }
     });
 }
