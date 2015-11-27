@@ -1,0 +1,41 @@
+Recipe API
+
+Recipe Resource
+---------------
+New:        POST   /recipe
+Update:     PATCH  /recipe/:id
+    notes:
+    - Use this call to increment the number of times a recipe has been printed.
+Delete:     DELETE /recipe/:id
+Get:        GET    /recipe/:id
+List:       GET    /recipe
+    params:
+    - page      Which page of the recipes to return.
+    - limit     Only return a limited number of recipes.
+    - orderby   Order recipes by some attribute.
+    - dir       asc or desc
+    - category  Filter recipes by category.
+    - tags      Filter recipes by comma separated tags.
+    - q         Search string
+
+
+Recipe Model
+------------
+{
+    name: string,
+    dateAdded: number,
+    dateModified: number,
+    author: string,
+    category: string,
+    printCount: number,
+    tags: [string],
+    notes: string,
+    ingredients: [{
+        name: string,
+        quantity: 
+    }],
+    sections: [{
+        name: string,
+        instructions: string
+    }]
+}
