@@ -1,0 +1,11 @@
+.r-tag {
+    margin-left: 5px;
+    font-size: 0.9em;
+}
+.r-tag:hover {
+    cursor: pointer;
+}
+
+.clicky {
+	cursor: pointer;
+}

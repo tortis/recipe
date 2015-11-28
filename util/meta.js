@@ -32,7 +32,7 @@ function saveMetadata() {
 exports.addMetadata = function(tags, category) {
     if (tags.constructor === Array) {
         var n = new Set(tags);
-        exports.data.tags = exports.tags.union(n);
+        exports.data.tags = exports.data.tags.union(n);
     }
 
     if (category) {

@@ -11,8 +11,15 @@ var recipeSchema = new schema({
     printCount   : { type: Number, default: 0 },
     tags         : [String],
     notes        : String,
-    ingredients  : [ { name: {type: String, required: true}, qty: {type: Number, required: true}, unit: {type: String, required: true} } ],
-    sections     : [ { name: String, instructions: {type: String, required: true} } ]
+    sections     : [{
+        name: String,
+        instructions: {type: String, required: true},
+        ingredients: [{
+            name: {type: String, required: true},
+            qty: {type: String, required: true},
+            unit: {type: String, required: true}
+        }]
+    }]
 });
 
 recipeSchema.pre('validate', function(next) {

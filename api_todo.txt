@@ -1,0 +1,4 @@
+* better search (partial words)
+* testing (does it even work?)
+* track unit types
+* cleaner patching (maybe?)

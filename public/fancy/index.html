@@ -1,0 +1,62 @@
+<!doctype html>
+
+<html lang="en" ng-app="recipeApp">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.8">
+	<title>Recipe</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/styles.css">
+	<style>.ng-cloak { display: none; }</style>
+</head>
+<body ng-controller="recipeCtrl" class="ng-cloak" ng-cloak>
+	<script src="js/angular.min.js"></script>
+	<script src="js/ui-bootstrap-tpls-0.12.0.min.js"></script>
+	<script src="js/recipe.js"></script>
+
+    <div class="bar">
+        <div class="bar-brand">
+            <span>Findley Recipe</span>
+        </div>
+        <div class="bar-search">
+            <div class="bar-search-inner">
+                <div class="bar-search-head"><span class="glyphicon glyphicon-search"></span></div>
+                <div class="bar-search-body">
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+        </div>
+        <div class="bar-right">
+        </div>
+    </div>
+
+	<div class="recipe-list" ng-class="{'separate-up':openTop}">
+		<div class="recipe-container" ng-class="{'recipe-container-open':recipe.open, 'recipe-container-bottom':($last || (!$last && recipeList[$index+1].open)) && !recipe.open}" ng-repeat="recipe in recipeList">
+			<div class="recipe-list-item" ng-click="toggleOpen(recipe, $first)" ng-class="{'recipe-list-item-active':recipe.active, 'recipe-list-item-open':recipe.open}">
+				<div class="recipe-list-item-icon dessert-icon"> </div>
+				<div class="recipe-list-item-title" ng-class="{'title-open':recipe.open}">{{recipe.name}}</div>
+				<!-- <div class="recipe-list-item-btns">
+					<div class="recipe-list-item-btn print-icon"></div>
+					<div class="recipe-list-item-btn edit-icon"></div>
+                    </div> -->
+				<div class="recipe-list-item-detail">
+					Preheat oven to 400F. Mix ingredients in large bowl.Preheat oven to 400F. Mix ingredients in large bowl.Preheat oven to 400F. Mix ingredients in large bowl.Preheat oven to 400F. Mix ingredients in large bowl.
+				</div>
+			</div>
+			<div collapse="!recipe.open" class="recipe-body"> 
+				<div class="ingredient-section" ng-repeat="ings in recipe.ingredients">
+					<div class="recipe-section-heading"><strong>{{ings.section}}</strong></div>
+					<div class="container-fluid ingredients-list well">
+						<div class="col-sm-6 ingredient" ng-repeat="ing in ings.ingredients">
+							<span class="ingredient-qty">{{ing.qty}}</span>
+							<span class="ingredient-unit">{{ing.unit}}</span>
+							<span class="ingredient-name">{{ing.name}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="instructions">{{recipe.instructions}}</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
