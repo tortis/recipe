@@ -1,6 +1,8 @@
 var restify  = require('restify');
 var mongoose = require('mongoose');
 
+var objectIdRegEx = /^[a-f\d]{24}$/i;
+
 exports.parseError = function(err) {
     if (err == null) return null;
     if (err && err.name == 'MongoError') {
@@ -19,5 +21,18 @@ exports.parseError = function(err) {
 };
 
 exports.isObjectId = function(n) {
-    return mongoose.Types.ObjectId.isValid(n);
+    return objectIdRegEx.test(n);
+};
+
+exports.processIngData = function(ings) {
+    var r = {names: [], units: []};
+    if (ings.constructor !== Array) return r
+    for (var i = 0; i < ings.length; i++) {
+        for (var j = 0; j < ings[i].list.length; j++) {
+            r.names.push(ings[i].list[j].name);
+            r.units.push(ings[i].list[j].unit);
+        }
+    }
+
+    return r;
 };

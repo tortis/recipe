@@ -1,0 +1,4 @@
+* Prep time / cook time
+* Handle errors from recipe save
+* Validate that quantites are numbers or fractions?
+* preserve nr (new recipe) if modal is dismissed by click outside. Only clear nr if 'Cancel' button is clicked

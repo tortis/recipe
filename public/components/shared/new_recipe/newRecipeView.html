@@ -1,0 +1,84 @@
+<div class="modal-header">
+    <h3 ng-show="!done" class="modal-title">New Recipe</h3>
+    <h3 ng-show="done" class="modal-title">Recipe Added!</h3>
+</div>
+
+<div class="modal-body">
+    <div class="alert alert-danger" ng-show="error"><strong>Oops!</strong> {{error}}</div>
+    <form ng-show="!done" ng-submit="save()">
+        <div class="form-group">
+            <label for="recipe-name">Name*</label>
+            <input type="text" id="recipe-name" class="form-control" placeholder="Recipe name" ng-model="nr.name" required autofocus>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="recipe-author">Author*</label>
+                <input type="text" id="recipe-author" class="form-control" placeholder="Recipe author" ng-model="nr.author" required>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="recipe-cat">Category*</label>
+                <input type="text" id="recipe-cat" class="form-control" placeholder="Category" ng-model="nr.category" typeahead="category for category in meta.categories | filter:$viewValue | limitTo:8" required>
+            </div>
+        </div>
+
+        <div ng-repeat="section in nr.ingredients">
+            <div ng-show="nr.ingredients.length > 1" class="form-group">
+                <label for="ing-{{$index+1}}-name">Name</label>
+                <input type="text" id="ing-{{$index+1}}-name" class="form-control" placeholder="Recipe name" ng-model="nr.ingredients[$index].name">
+            </div>
+            <label>Ingredients</label>
+            <div class="container-fluid well">
+                <div ng-repeat="ing in section.list" class="col-sm-6">
+                    <span class="ing-qty">{{ing.qty}}</span>
+                    <span class="ing-unit">{{ing.unit}}</span>
+                    <span class="ing-name">{{ing.name}}</span>
+					<span style="color:red" class="glyphicon glyphicon-remove clicky" ng-click="section.list.splice($index, 1)"></span>
+                </div>
+                <i ng-show="section.list.length === 0">Add some ingredients below!</i>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 form-group">
+					<label>Qty</label>
+                    <input type="text" id="ing-qty" class="form-control" placeholder="2" ng-model="ni.qty" ng-enter="addIngredient($index, ni)">
+                </div>
+                <div class="col-sm-2 form-group">
+					<label>Units</label>
+                    <input type="text" class="form-control" placeholder="cups" ng-model="ni.unit" ng-enter="addIngredient($index, ni)" typeahead="unit for unit in meta.units | filter:$viewValue | limitTo:8">
+                </div>
+                <div class="col-sm-6 form-group">
+					<label>Name</label>
+                    <input type="text" class="form-control" placeholder="Milk" ng-model="ni.name" ng-enter="addIngredient($index, ni)" typeahead="ing for ing in meta.ingredients | filter:$viewValue | limitTo:8">
+                </div>
+                <div class="col-sm-1 form-group">
+					<label>&nbsp;</label>
+                    <button type="button" class="btn btn-success" ng-click="addIngredient($index, ni)"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+            </div>
+        </div>
+        <div ng-repeat="section in nr.instructions">
+            <div class="form-group">
+                <label for="section-{{$index+1}}-instructions">Instructions*</label>
+                <textarea id="section-{{$index+1}}-instructions" class="form-control" placeholder="Instructions" ng-model="nr.instructions[$index].content" required></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="recipe-tags">Tags</label>
+            <div style="display: inline-block;">
+                <span ng-click="nr.tags.splice($index, 1);" ng-mouseenter="h = true;" ng-mouseleave="h=false;" ng-repeat="tag in nr.tags" class="label label-info r-tag">{{h ? 'Remove tag' : tag}}</span>
+            </div>
+            <input type="text" id="recipe-tags" ng-model="curTag" class="form-control" placeholder="Type a tag and press return" typeahead="tag for tag in meta.tags | filter:$viewValue | limitTo: 8" ng-enter="addTag(curTag)">
+        </div>
+        <div class="form-group">
+            <label for="recipe-notes">Notes</label>
+            <textarea id="recipe-notes" class="form-control" placeholder="notes..." ng-model="nr.notes"></textarea>
+        </div>
+    </form>
+    <div class="alert alert-success" ng-show="done">{{nr.name}} was added.</div>
+</div>
+
+<div class="modal-footer">
+    <button ng-show="!done" class="btn btn-success" ng-click="save()">Save</button>
+    <button ng-show="!done" class="btn btn-danger" ng-click="cancel()">Cancel</button>
+    <button ng-show="done" class="btn btn-success" ng-click="cancel()">Ok</button>
+</div>

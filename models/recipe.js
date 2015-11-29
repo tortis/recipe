@@ -11,14 +11,17 @@ var recipeSchema = new schema({
     printCount   : { type: Number, default: 0 },
     tags         : [String],
     notes        : String,
-    sections     : [{
+    ingredients  : [{
         name: String,
-        instructions: {type: String, required: true},
-        ingredients: [{
+        list: [{
             name: {type: String, required: true},
             qty: {type: String, required: true},
             unit: {type: String, required: true}
         }]
+    }],
+    instructions : [{
+        name: String,
+        content: {type: String, required: true}
     }]
 });
 

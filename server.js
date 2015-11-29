@@ -6,6 +6,7 @@ flags.parse();
 
 var restify  = require('restify');
 var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 var handlers = require('./handlers');
 
 // Connect to mongodb

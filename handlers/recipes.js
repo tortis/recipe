@@ -6,8 +6,10 @@ var meta    = require('../util/meta.js');
 exports.create = function(req, res, next) {
     Recipe.create(req.body, function(err, r) {
         if (err) return res.send(utils.parseError(err));
-        meta.addMetadata(r.tags, r.category);
-        return res.send(r);
+        res.send(r);
+
+        var ai = utils.processIngData(r.ingredients);
+        meta.addMetadata(r.tags, r.category, ai.names, ai.units);
     });
 };
 
@@ -15,8 +17,10 @@ exports.update = function(req, res, next) {
     var h = function(err, r) {
         if (err) return res.send(utils.parseError(err));
         if (r == null) return res.send(new restify.NotFoundError('No recipe with this id exists'));
-        meta.addMetadata(req.body.tags, req.body.category);
-        return res.send(r);
+        res.send(r);
+
+        var ai = utils.processIngData(r.ingredients);
+        meta.addMetadata(req.body.tags, req.body.category, api.names, api.units);
     };
 
     if (utils.isObjectId(req.params.id)) {
@@ -93,14 +97,24 @@ exports.search = function(req, res, next) {
     }
     if (req.params.tags) filter.tags = {$in: req.params.tags};
 
-    Recipe.find(filter)
-    .skip( (req.params.page-1)*req.params.limit )
+    var q = Recipe.find(filter);
+    q.skip( (req.params.page-1)*req.params.limit )
     .limit(req.params.limit)
     .sort(sort)
     .select(select)
-    .exec(function(err, rs) {
-        if (err) return res.send(utils.parseError(err));
-        res.send(rs);
+    .exec()
+    .then(function(r) {
+        return [r, q.count()];
+    })
+    .spread(function(r, c) {
+        res.setHeader('result-count', c);
+        res.setHeader('result-limit', req.params.limit);
+        res.setHeader('result-page', req.params.page);
+        if (req.params.q) res.setHeader('result-q', req.params.q);
+        return res.send(r);
+    })
+    .catch(function(err) {
+        return res.send(utils.parseError(err));
     });
 };
 

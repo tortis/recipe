@@ -4,7 +4,8 @@ RecipeControllers.controller('newRecipeCtrl', ['$scope', '$modalInstance', 'Reci
     function($scope, $modalInstance, Recipe) {
         $scope.nr = { 
             tags: [],
-            sections: [{ingredients: [], instructions: ''}]
+            ingredients: [{list: []}],
+            instructions: [{content: ''}]
         };
 
         $scope.ni = {};
@@ -19,23 +20,36 @@ RecipeControllers.controller('newRecipeCtrl', ['$scope', '$modalInstance', 'Reci
         });
 
 		$scope.addTag = function(tag) {
+            if ($scope.curTag == '') return;
             $scope.nr.tags.push(tag);
             $scope.curTag = '';
 		};
 
         $scope.addSection = function() {
-            $scope.nr.sections.push({name:'Section '+$scope.nr.sections.length+1,ingredients: [], instructions: ''});
+            // TODO
         };
 
-        $scope.addIngredient = function(sectionIndex, ni) {
-            $scope.nr.sections[sectionIndex].ingredients.push(ni);
+        $scope.addIngredient = function(ingIndex, ni) {
+            if (ni.name == null || ni.qty == null || ni.unit == null) {
+                //TODO: Show an error message to the user
+                return;
+            }
+            $scope.nr.ingredients[ingIndex].list.push(ni);
             $scope.ni = {};
-			document.getElementById('ing-name').focus();
+			document.getElementById('ing-qty').focus();
         };
 
         $scope.save = function() {
             console.log('saving new recipe: %O', $scope.nr);
-            $modalInstance.close();
+            var r = new Recipe($scope.nr);
+            r.$save(function() {
+                $scope.done = true;
+                $scope.error = undefined;
+            }, function(err) {
+                // TODO: Handle this error message
+                $scope.error = "There was a problem saving the recipe.";
+                console.log(err);    
+            });
         };
 
         $scope.cancel = $modalInstance.close;

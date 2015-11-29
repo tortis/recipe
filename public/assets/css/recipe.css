@@ -6,6 +6,25 @@
     cursor: pointer;
 }
 
+.r-tag-noh {
+    margin-left: 5px;
+    font-size: 0.9em;
+}
+
 .clicky {
 	cursor: pointer;
+}
+
+.ing-qty {
+    min-width:40px;
+    display: inline-block;
+}
+
+.ing-unit {
+    min-width: 40px;
+    display: inline-block;
+}
+
+.ing-name {
+
 }
