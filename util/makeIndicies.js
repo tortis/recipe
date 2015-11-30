@@ -11,8 +11,8 @@ db.recipes.createIndex({
     category: 'text',
     tags: 'text',
     notes: 'text',
-    'sections.instructions': 'text',
-    'sections.ingredients.name': 'text'
+    'instructions.content': 'text',
+    'ingredients.list.name': 'text'
 },{
     name: 'RecipeSearch',
     weights: {

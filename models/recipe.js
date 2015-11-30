@@ -17,7 +17,7 @@ var recipeSchema = new schema({
         list: [{
             name: {type: String, required: true},
             qty: {type: String, required: true},
-            unit: {type: String, required: true}
+            unit: {type: String}
         }]
     }],
     instructions : [{

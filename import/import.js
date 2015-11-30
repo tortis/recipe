@@ -62,7 +62,7 @@ function parseTitle(rp) {
     var titleString = rp.lines[rp.pos].trim();
     var titleAndAuthor = titleString.replace('Title: ', '');
     var titlePieces = titleAndAuthor.split(' - ', 2);
-    rp.r.title = titlePieces[0];
+    rp.r.name = titlePieces[0];
     rp.r.author = 'Unknown';
     if (titlePieces.length > 1)
         rp.r.author = titlePieces[1];
