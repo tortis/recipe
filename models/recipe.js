@@ -8,7 +8,8 @@ var recipeSchema = new schema({
     dateModified : { type: Date, default: Date.now },
     author       : String,
     category     : String,
-    printCount   : { type: Number, default: 0 },
+    yield        : String,
+    printCount   : { type: Number, default: 1 },
     tags         : [String],
     notes        : String,
     ingredients  : [{
