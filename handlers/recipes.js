@@ -61,18 +61,23 @@ exports.get = function(req, res, next) {
 
 exports.search = function(req, res, next) {
     // Sanitize query variables
+    console.log(req.params.page);
     if (req.params.limit && req.params.limit > 50) req.params.limit = 50;
-    if (req.params.limit == null) req.params.limit = 50;
+    if (req.params.limit == null) req.params.limit = '50';
+    req.params.limit = parseInt(req.params.limit);
     if (req.params.limit < 0) req.params.limit = -req.params.limit;
     if (req.params.dir == null ) req.params.dir = 'asc';
     if (req.params.dir != 'asc' && req.params.dir != 'desc') req.params.dir = 'asc';
-    if (req.params.page == null) req.params.page = 1;
+    if (req.params.page == null) req.params.page = '1';
+    req.params.page = parseInt(req.params.page);
     if (req.params.page < 1) req.params.page = 1;
     if (req.params.orderby == null) req.params.orderby = 'name';
     if (req.params.tags) {
         req.params.tags = req.params.tags.split(',');
         req.params.tags = req.params.tags.map(function(e) { return e.toLowerCase(); });
     }
+
+    console.log(req.params.page);
 
     var sort = {};
     sort[req.params.orderby] = req.params.dir;
@@ -104,7 +109,7 @@ exports.search = function(req, res, next) {
     .select(select)
     .exec()
     .then(function(r) {
-        return [r, q.count()];
+        return [r, Recipe.find(filter).count()];
     })
     .spread(function(r, c) {
         res.setHeader('result-count', c);

@@ -22,7 +22,7 @@ var recipeSchema = new schema({
     }],
     instructions : [{
         name: String,
-        content: {type: String, required: true}
+        content: String
     }]
 });
 

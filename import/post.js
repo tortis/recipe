@@ -1,7 +1,7 @@
 var http = require('http');
 var fs   = require('fs');
 
-var rs = JSON.parse(fs.readFileSync('recipes.json'));
+var rs = JSON.parse(fs.readFileSync('cleanrecipes.json', 'utf8'));
 
 var options = {
     hostname: 'localhost',
@@ -15,14 +15,13 @@ var options = {
 
 console.log(rs.length);
 
-var i = 916;
+var i = 0;
 var iid = setInterval(function() {
     var d = JSON.stringify(rs[i]);
     options.headers['Content-Length'] = d.length;
     var req = http.request(options, function(res) {
+        console.log(i-1 + ': '+res.statusCode + ' - ' + rs[i-1].name);
         if (res.statusCode != 200) {
-            console.log(i + ': '+res.statusCode);    
-            console.log(rs[i].name);
             res.setEncoding('utf8');
             res.on('data', function(c) {
                 console.log(c);
