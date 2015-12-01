@@ -3,6 +3,19 @@
 </div>
 
 <div class="modal-body">
+    <div ng-repeat="ingSec in recipe.ingredients" class="well container-fluid">
+        <div ng-if="ingSec.name"><strong>{{ingSec.name}}</strong></div>
+        <div ng-repeat="ing in ingSec.list" class="col-sm-6">
+            <span class="ing-qty">{{ing.qty}}</span>
+            <span class="ing-unit">{{ing.unit}}</span>
+            <span class="ing-name">{{ing.name}}</span>
+        </div>
+    </div>
+
+    <div ng-repeat="instSec in recipe.instructions">
+        <h3 ng-if="instSec.name">{{instSec.name}}</h3>
+        <p ng-repeat="c in instSec.contentPieces">{{c}}</p>
+    </div>
     <!-- Prep/cook time -->
     <!-- Category -->
     <!-- Ingredients -->

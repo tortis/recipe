@@ -15,14 +15,15 @@ angular.module('RecipeControllers').controller('DashCtrl', [
                 $scope.q = '';
             }
         });
-
         RLM.load();
-
 
         $scope.imgs = ['asian', 'bread', 'dessert', 'meat', 'salad', 'seafood', 'soup', 'vegetables'];
 
+        $scope.pageChanged = function() {
+            $location.search('page', $scope.stats.page);
+        }
+
         $scope.openRecipe = function(r) {
-            $location.search('r', r.linkName);
             $modal.open({
                 templateUrl: '/components/detail/detailView.html',
                 controller: 'detailCtrl',
@@ -32,12 +33,7 @@ angular.module('RecipeControllers').controller('DashCtrl', [
                     r: function() { return r; }
                 }
             })
-            .result.then(function() {
-                $location.search('r', null);
-            })
-            .catch(function() {
-                $location.search('r', null);
-            });
+            .result.then(function() {});
         };
 
         var s = $location.search();

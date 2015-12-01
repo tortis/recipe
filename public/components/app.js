@@ -6,10 +6,18 @@ RecipeApp.config(['$routeProvider', '$locationProvider',
         .when('/', {
             templateUrl: '/components/dash/dashView.html',
             controller: 'DashCtrl',
-            reloadOnSearch: false
+            reloadOnSearch: false,
         })
         .otherwise({
             templateUrl: '/components/errors/notFoundView.html'
+        });
+    }
+]);
+
+RecipeApp.run(['$rootScope', 'recipeListMgr',
+    function($rootScope, RLM) {
+        $rootScope.$on('$locationChangeStart', function(event, next, current) {
+            RLM.load();
         });
     }
 ]);
@@ -35,13 +43,12 @@ RecipeControllers.controller('mainCtrl', [
 
         $scope.search = function(q) {
             $location.search('q', q);
-            RLM.load();
+            $location.search('page', null);
         };
 
         $scope.clear = function() {
             $scope.q = '';
             $location.search('q', null);
-            RLM.load();
         }
     }
 ]);

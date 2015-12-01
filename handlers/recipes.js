@@ -61,9 +61,8 @@ exports.get = function(req, res, next) {
 
 exports.search = function(req, res, next) {
     // Sanitize query variables
-    console.log(req.params.page);
     if (req.params.limit && req.params.limit > 50) req.params.limit = 50;
-    if (req.params.limit == null) req.params.limit = '50';
+    if (req.params.limit == null) req.params.limit = '25';
     req.params.limit = parseInt(req.params.limit);
     if (req.params.limit < 0) req.params.limit = -req.params.limit;
     if (req.params.dir == null ) req.params.dir = 'asc';
@@ -76,8 +75,6 @@ exports.search = function(req, res, next) {
         req.params.tags = req.params.tags.split(',');
         req.params.tags = req.params.tags.map(function(e) { return e.toLowerCase(); });
     }
-
-    console.log(req.params.page);
 
     var sort = {};
     sort[req.params.orderby] = req.params.dir;
@@ -98,7 +95,8 @@ exports.search = function(req, res, next) {
     if (req.params.q) {
         filter.$text = {$search: req.params.q};
         select.score = {$meta: "textScore"};
-        sort.score = {$meta: "textScore"};
+        sort = {score: {$meta: 'textScore'}};
+        req.params.orderby = 'score';
     }
     if (req.params.tags) filter.tags = {$in: req.params.tags};
 
@@ -115,6 +113,8 @@ exports.search = function(req, res, next) {
         res.setHeader('result-count', c);
         res.setHeader('result-limit', req.params.limit);
         res.setHeader('result-page', req.params.page);
+        res.setHeader('result-dir', req.params.dir);
+        res.setHeader('result-orderby', req.params.orderby);
         if (req.params.q) res.setHeader('result-q', req.params.q);
         return res.send(r);
     })
