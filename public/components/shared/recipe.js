@@ -5,10 +5,6 @@ RecipeControllers.factory('Recipe', ['$resource',
         var Recipe = $resource('/api/recipes/:id', {
             id: '@linkName'
         }, {
-            print: {
-                method: 'GET',
-                url: '/api/recipes/:id/print'
-            },
             meta: {
                 method: 'GET',
                 url: '/api/recipes/meta'

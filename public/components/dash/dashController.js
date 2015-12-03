@@ -1,4 +1,4 @@
-angular.module('RecipeControllers').controller('DashCtrl', [
+angular.module('RecipeControllers').controller('dashCtrl', [
     '$scope',
     '$location',
     '$modal',
@@ -21,6 +21,7 @@ angular.module('RecipeControllers').controller('DashCtrl', [
 
         $scope.pageChanged = function() {
             $location.search('page', $scope.stats.page);
+            window.scrollTo(0, 0);
         }
 
         $scope.openRecipe = function(r) {

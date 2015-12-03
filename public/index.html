@@ -35,7 +35,7 @@
                 <button type="button" class="btn btn-success navbar-btn" ng-click="openNewRecipe()"><span class="glyphicon glyphicon-plus"></span> New</button>
                 <form class="navbar-form navbar-right" ng-submit="search(q)">
                 <div class="input-group">
-                    <input id="search" type="text" placeholder="search" ng-model="q" class="form-control">
+                    <input id="search" type="text" ng-enter="search(q)" placeholder="search" ng-model="q" ng-change="typeAhead(q)" typeahead="opt for opt in getNames($viewValue) | limitTo:8" typeahead-min-length="2" typeahead-wait-ms="250" typeahead-focus-first="false" class="form-control">
                     <span class="input-group-btn">
                         <button class="btn btn-default" ng-click="search(q)" type="button">Go!</button>
                     </span>

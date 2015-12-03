@@ -1,3 +1,8 @@
+html, body
+{
+    height: 100%;
+}
+
 .r-tag {
     margin-left: 5px;
     font-size: 0.9em;
@@ -29,7 +34,17 @@
 
 }
 
+.r-no-m {
+    margin: 0;
+}
+
 body.modal-open {
     overflow-y: auto !important;
     padding-right: 0 !important;
+}
+
+/* To fix chrome modal scroll bug */
+.modal.in {
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
 }

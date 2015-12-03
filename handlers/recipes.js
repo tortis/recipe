@@ -123,6 +123,22 @@ exports.search = function(req, res, next) {
     });
 };
 
+exports.typeahead = function(req, res, next) {
+    if (!req.params.pre) return res.send([]);
+    var reg = new RegExp('.*'+req.params.pre + '.*', 'gi');
+    Recipe.find({name: reg})
+    .limit(8)
+    .sort({printCount: 'desc'})
+    .select({name: 1})
+    .exec()
+    .then(function(names) {
+        res.send(names);
+    })
+    .catch(function(err) {
+        return res.send(utils.parseError(err));
+    });
+};
+
 exports.print = function(req, res, next) {
     var h = function(err, r) {
         if (err) {

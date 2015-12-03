@@ -5,7 +5,7 @@ var rs = JSON.parse(fs.readFileSync('cleanrecipes.json', 'utf8'));
 
 var options = {
     hostname: 'localhost',
-    port:8080,
+    port:80,
     path: '/api/recipes',
     method: 'POST',
     headers: {

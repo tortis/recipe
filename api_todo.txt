@@ -1,7 +1,5 @@
-* better search (partial words)
-* testing (does it even work?)
-* track unit types
 * cleaner patching / patching validation
 * Prep time / cook time
 * Validate that quantites are numbers or fractions?
-* Save meta.json only when changes are made on a setInterval()
+* Don't delete recipes, just move them?
+* Dash page handler

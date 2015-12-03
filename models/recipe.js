@@ -2,14 +2,14 @@ var mongoose = require('mongoose');
 var schema   = mongoose.Schema;
 
 var recipeSchema = new schema({
-    name         : { type: String, required: true },
+    name         : { type: String, required: true, index: true},
     linkName     : { type: String, unique: true },
     dateCreated  : { type: Date, default: Date.now },
     dateModified : { type: Date, default: Date.now },
     author       : String,
     category     : String,
     yield        : String,
-    printCount   : { type: Number, default: 1 },
+    printCount   : { type: Number, default: 0 },
     tags         : [String],
     notes        : String,
     ingredients  : [{
@@ -24,6 +24,27 @@ var recipeSchema = new schema({
         name: String,
         content: String
     }]
+});
+
+recipeSchema.index({
+    name: 'text',                                                                                                                                              
+    author: 'text',
+    category: 'text',
+    tags: 'text',
+    notes: 'text',
+    'instructions.content': 'text',
+    'ingredients.list.name': 'text'
+}, {
+    name: 'RecipeSearch',
+    weights: {
+        name: 10,
+        author: 4,
+        category: 3,
+        tags: 3,
+        notes: 1,
+        'instructions.content': 1,
+        'ingredients.list.name': 1
+    }
 });
 
 recipeSchema.pre('validate', function(next) {

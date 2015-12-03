@@ -5,8 +5,12 @@ RecipeApp.config(['$routeProvider', '$locationProvider',
         $routeProvider
         .when('/', {
             templateUrl: '/components/dash/dashView.html',
-            controller: 'DashCtrl',
+            controller: 'dashCtrl',
             reloadOnSearch: false,
+        })
+        .when('/print/:id', {
+            templateUrl: '/components/print/printView.html',
+            controller: 'printCtrl'
         })
         .otherwise({
             templateUrl: '/components/errors/notFoundView.html'
@@ -27,9 +31,10 @@ var RecipeControllers = angular.module('RecipeControllers', ['ui.bootstrap', 'ng
 RecipeControllers.controller('mainCtrl', [
     '$scope',
     '$location',
+    '$http',
     '$modal',
     'recipeListMgr',
-    function($scope, $location, $modal, RLM) {
+    function($scope, $location, $http, $modal, RLM) {
         document.getElementById('search').focus();
         $scope.openNewRecipe = function() {
             $modal.open({
@@ -49,7 +54,14 @@ RecipeControllers.controller('mainCtrl', [
         $scope.clear = function() {
             $scope.q = '';
             $location.search('q', null);
+            $location.search('page', null);
         }
+
+        $scope.getNames = function(pre) {
+            return $http.get('/api/recipes/typeahead/'+pre).then(function(resp) {
+                return resp.data.map(function(v) {return v.name});
+            });
+        };
     }
 ]);
 

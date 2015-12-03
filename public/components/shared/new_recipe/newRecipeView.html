@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-sm-6 form-group">
 					<label>Name</label>
-                    <input type="text" class="form-control" placeholder="Milk" ng-model="ni.name" ng-enter="addIngredient($index, ni)" typeahead="ing for ing in meta.ingredients | filter:$viewValue | limitTo:8">
+                    <input type="text" class="form-control" placeholder="Milk" ng-model="ni.name" ng-enter="addIngredient($index, ni)" typeahead="ing for ing in meta.ingredients | filter:$viewValue | limitTo:8" typeahead-focus-first="false">
                 </div>
                 <div class="col-sm-1 form-group">
 					<label>&nbsp;</label>

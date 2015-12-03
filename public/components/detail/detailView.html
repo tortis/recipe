@@ -1,11 +1,20 @@
 <div class="modal-header">
-    <h3 class="modal-title">{{recipe.name}} <small style="color:#777">{{recipe.author}}</small> <a href="" class="pull-right" target="_blank"><span class="glyphicon glyphicon-print"></span></a></h3>
+    <h3 class="modal-title" ng-if="!deleted">
+        {{recipe.name}} <small style="color:#777">{{recipe.author}}</small>
+        <a href="" ng-click="print();" class="pull-right"><span class="glyphicon glyphicon-print"></span></a>
+    </h3>
+    <h3 class="modal-title" ng-if="deleted">Recipe Deleted</h3>
 </div>
 
-<div class="modal-body">
+
+<div ng-if="deleted" class="modal-body">
+    <div class="alert alert-success">{{deletedRName}} has been deleted successfully.</div>
+</div>
+
+<div ng-if="!deleted" class="modal-body">
     <div ng-repeat="ingSec in recipe.ingredients" class="well container-fluid">
         <div ng-if="ingSec.name"><strong>{{ingSec.name}}</strong></div>
-        <div ng-repeat="ing in ingSec.list" class="col-sm-6">
+        <div ng-repeat="ing in ingSec.list" class="col-md-6">
             <span class="ing-qty">{{ing.qty}}</span>
             <span class="ing-unit">{{ing.unit}}</span>
             <span class="ing-name">{{ing.name}}</span>
@@ -14,15 +23,24 @@
 
     <div ng-repeat="instSec in recipe.instructions">
         <h3 ng-if="instSec.name">{{instSec.name}}</h3>
-        <p ng-repeat="c in instSec.contentPieces">{{c}}</p>
+        <div ng-repeat="c in instSec.contentPieces track by $index">
+            <p ng-if="c" class="r-no-m">{{c}}</p>
+            <p ng-if="!c" class="r-no-m">&nbsp;</p>
+        </div>
     </div>
     <!-- Prep/cook time -->
     <!-- Category -->
-    <!-- Ingredients -->
-    <!-- Instructions -->
     <!-- Notes/Tags -->
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="cancel()">Close</button>
+    <button class="btn btn-danger pull-left" ng-show="!deleted && !editing" ng-click="delete()">
+        <span class="glyphicon glyphicon-trash"></span> 
+        {{deleteConfirm ? 'Really?' : 'Delete'}}
+    </button>
+    <button class="btn btn-warning pull-left" ng-show="!deleted && !editing" ng-click="editing=true">
+        <span class="glyphicon glyphicon-edit"></span> Edit
+    </button>
+    <button class="btn btn-primary" ng-show="!editing" ng-click="cancel()">Close</button>
+    <button class="btn btn-success" ng-show="editing" ng-click="editing = false">Save</button>
 </div>

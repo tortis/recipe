@@ -20,15 +20,27 @@ var server = restify.createServer({
 // Attach middleware
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
+server.use(function(req, res, next) {
+    if (res._responseTime) return next();
+    res._responseTime = true;
+    var start = new Date();
+    res.on('header', function() {
+        var duration = new Date - start;
+        res.setHeader('Response-Time', duration + 'ms');
+    });
+    next();
+});
+// server.use(restify.gzipResponse());
 
 // Recipe resource
-server.post ( '/api/recipes'           , handlers.recipes.create);
-server.get  ( '/api/recipes/meta'      , handlers.recipes.meta);
-server.patch( '/api/recipes/:id'       , handlers.recipes.update);
-server.del  ( '/api/recipes/:id'       , handlers.recipes.delete);
-server.get  ( '/api/recipes/:id'       , handlers.recipes.get);
-server.get  ( '/api/recipes'           , handlers.recipes.search);
-server.get  ( '/api/recipes/:id/print' , handlers.recipes.print);
+server.post ( '/api/recipes'               , handlers.recipes.create);
+server.get  ( '/api/recipes/meta'          , handlers.recipes.meta);
+server.get  ( '/api/recipes/typeahead/:pre', handlers.recipes.typeahead);
+server.patch( '/api/recipes/:id'           , handlers.recipes.update);
+server.del  ( '/api/recipes/:id'           , handlers.recipes.delete);
+server.get  ( '/api/recipes/:id'           , handlers.recipes.get);
+server.get  ( '/api/recipes'               , handlers.recipes.search);
+server.get  ( '/api/recipes/:id/print'     , handlers.recipes.print);
 
 // Static file handler
 server.get( '/.*', restify.serveStatic({
