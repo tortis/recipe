@@ -36,3 +36,68 @@ exports.processIngData = function(ings) {
 
     return r;
 };
+
+exports.iconFromCategory = function(category) {
+    switch(category) {
+        case 'dessert':
+        case 'desserts':
+        case 'candies':
+        case 'candy':
+        case 'muffins':
+        case 'pies':
+        case 'cakes':
+        case 'cake':
+            return 'dessert';
+        case 'breads':
+        case 'bread':
+            return 'bread';
+        case 'asian':
+        case 'chinese':
+        case 'vietnamese':
+            return 'asian';
+        case 'poultry':
+            return 'poultry';
+        case 'meat':
+        case 'meats':
+        case 'steak':
+            return 'meat';
+        case 'main dish':
+            return 'main';
+        case 'salad':
+        case 'salads':
+            return 'salad';
+        case 'seafood':
+        case 'fish':
+            return 'seafood';
+        case 'soup':
+        case 'soups':
+        case 'stew':
+            return 'soup';
+        case 'vegetables':
+            return 'vegetables';
+        case 'appetizer':
+        case 'appetizers':
+        case 'dips':
+            return 'appetizer';
+        default:
+            return 'default';
+    }
+};
+
+
+exports.getRandomInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+exports.listProjection = {
+    name: 1,
+    author: 1,
+    category: 1,
+    icon: 1,
+    tags: 1,
+    printCount:1,
+    linkName: 1,
+    dateCreated: 1,
+    dateModified: 1,
+    score: {$meta: 'textScore'}
+};

@@ -5,7 +5,11 @@ RecipeApp.config(['$routeProvider', '$locationProvider',
         $routeProvider
         .when('/', {
             templateUrl: '/components/dash/dashView.html',
-            controller: 'dashCtrl',
+            controller:  'dashCtrl'
+        })
+        .when('/search', {
+            templateUrl: '/components/search/searchView.html',
+            controller: 'searchCtrl',
             reloadOnSearch: false,
         })
         .when('/print/:id', {
@@ -47,6 +51,7 @@ RecipeControllers.controller('mainCtrl', [
         };
 
         $scope.search = function(q) {
+            $location.path('/search');
             $location.search('q', q);
             $location.search('page', null);
         };

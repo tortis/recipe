@@ -1,15 +1,17 @@
 var mongoose = require('mongoose');
+var utils    = require('../util/utils.js');
 var schema   = mongoose.Schema;
 
 var recipeSchema = new schema({
-    name         : { type: String, required: true, index: true},
+    name         : { type: String, required: true, index: true },
     linkName     : { type: String, unique: true },
-    dateCreated  : { type: Date, default: Date.now },
+    dateCreated  : { type: Date, default: Date.now, index: true },
     dateModified : { type: Date, default: Date.now },
     author       : String,
     category     : String,
+    icon         : String,
     yield        : String,
-    printCount   : { type: Number, default: 0 },
+    printCount   : { type: Number, default: 0 , index: true },
     tags         : [String],
     notes        : String,
     ingredients  : [{
@@ -56,6 +58,11 @@ recipeSchema.pre('validate', function(next) {
     // Lower case
     this.category = this.category.toLowerCase();
     this.tags = this.tags.map(function(e) { return e.toLowerCase(); });
+
+    // If no icon is selected, try to pick one based on the category
+    if (this.icon == null) {
+        this.icon = utils.iconFromCategory(this.category);
+    }
 
     next();
 });

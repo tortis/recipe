@@ -1,0 +1,20 @@
+<div class="container">
+    <div>
+        <i>Showing {{stats.from}} - {{stats.to}} of {{stats.resultCount}} results <span ng-show="stats.q">for: {{stats.q}}</span></i>
+        <button ng-show="stats.q" ng-click="clear()" class="btn btn-default btn-sm"> Clear search</button>
+    </div>
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">Recipes</div>
+        <ul class="list-group">
+            <li ng-click="openRecipe(recipe)" ng-repeat="recipe in recipes" class="list-group-item clicky recipe-item">
+                <img ng-src="/assets/img/{{recipe.icon ? recipe.icon : 'default'}}.png" width=36 height=36 style="margin: -8px 0 -8px 0" tooltip="{{recipe.category}}">
+                {{recipe.name}} &mdash; <small style="color:#777">{{recipe.author}}</small>
+                <div class="pull-right hidden-xs"><span class="label label-info r-tag-noh" ng-repeat="tag in recipe.tags | limitTo: 3">{{tag}}</span></div>
+            </li>
+        </ul>
+    </div>
+    <div class="text-center">
+        <pagination total-items="stats.resultCount" items-per-page="stats.limit" max-size="10" ng-model="stats.page" ng-change="pageChanged()"></pagination>
+    </div>
+</div>

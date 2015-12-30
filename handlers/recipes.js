@@ -1,5 +1,6 @@
 var restify = require('restify');
-var Recipe  = require('../models/index.js').Recipe;
+var Recipe  = require('../models').Recipe;
+var DRecipe = require('../models').DRecipe;
 var utils   = require('../util/utils.js');
 var meta    = require('../util/meta.js');
 
@@ -14,19 +15,22 @@ exports.create = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
+    // DB call handler
     var h = function(err, r) {
         if (err) return res.send(utils.parseError(err));
         if (r == null) return res.send(new restify.NotFoundError('No recipe with this id exists'));
         res.send(r);
 
+        // Update ingredient, tag, and category metadata
         var ai = utils.processIngData(r.ingredients);
         meta.addMetadata(req.body.tags, req.body.category, api.names, api.units);
     };
 
     if (utils.isObjectId(req.params.id)) {
-        Recipe.findByIdAndUpdate(req.params.id, {$set: req.body}, h);
+        req.body.dateModified = Date.now();
+        Recipe.findByIdAndUpdate(req.params.id, {$set: req.body}, {runValidators: true},  h);
     } else {
-        Recipe.update({linkName: req.params.id.toLowerCase()}, {$set: req.body}, h);
+        Recipe.update({linkName: req.params.id.toLowerCase()}, {$set: req.body}, {runValidators: true}, h);
     }
 };
 
@@ -34,9 +38,14 @@ exports.delete = function(req, res, next) {
     var h = function(err, r) {
         if (err) return res.send(parseError(err));
         if (r == null) return res.send(new restify.NotFoundError('No recipe with this id exists'));
-        return res.send({success: true});
+
+        // Insert the deleted recipe into the deleted collection
+        DRecipe.create(r, function(err, rr) {
+            if (err) return res.send(utils.parseError(err));
+            return res.send({success: true});
+        });
     };
-    
+
     if (utils.isObjectId(req.params.id)) {
         Recipe.findByIdAndRemove(req.params.id, h);
     } else {
@@ -79,22 +88,10 @@ exports.search = function(req, res, next) {
     var sort = {};
     sort[req.params.orderby] = req.params.dir;
 
-    var select = {
-        name: 1,
-        author: 1,
-        category: 1,
-        tags: 1,
-        printCount:1,
-        linkName: 1,
-        dateCreated: 1,
-        dateModified: 1
-    };
-
     var filter = {};
     if (req.params.category) filter.category = req.params.category;
     if (req.params.q) {
         filter.$text = {$search: req.params.q};
-        select.score = {$meta: "textScore"};
         sort = {score: {$meta: 'textScore'}};
         req.params.orderby = 'score';
     }
@@ -104,7 +101,7 @@ exports.search = function(req, res, next) {
     q.skip( (req.params.page-1)*req.params.limit )
     .limit(req.params.limit)
     .sort(sort)
-    .select(select)
+    .select(utils.listProjection)
     .exec()
     .then(function(r) {
         return [r, Recipe.find(filter).count()];

@@ -12,8 +12,16 @@
 </div>
 
 <div ng-if="!deleted" class="modal-body">
-    <div ng-repeat="ingSec in recipe.ingredients" class="well container-fluid">
-        <div ng-if="ingSec.name"><strong>{{ingSec.name}}</strong></div>
+    <!-- Info -->
+    <div class="row">
+        <div class="col-xs-6"><strong>category: </strong>{{recipe.category}}</div>
+        <div class="col-xs-6"><strong>servings: </strong>{{recipe.yield}}</div>
+    </div>
+    <br />
+
+    <!-- Ingredients -->
+    <div ng-repeat="ingSec in recipe.ingredients" ng-show="ingSec.list.length > 0" class="well container-fluid">
+        <div style="margin-bottom: 10px;" ng-if="ingSec.name"><strong>{{ingSec.name}}</strong></div>
         <div ng-repeat="ing in ingSec.list" class="col-md-6">
             <span class="ing-qty">{{ing.qty}}</span>
             <span class="ing-unit">{{ing.unit}}</span>
@@ -21,6 +29,7 @@
         </div>
     </div>
 
+    <!-- Instructions -->
     <div ng-repeat="instSec in recipe.instructions">
         <h3 ng-if="instSec.name">{{instSec.name}}</h3>
         <div ng-repeat="c in instSec.contentPieces track by $index">
@@ -28,9 +37,19 @@
             <p ng-if="!c" class="r-no-m">&nbsp;</p>
         </div>
     </div>
-    <!-- Prep/cook time -->
-    <!-- Category -->
-    <!-- Notes/Tags -->
+    <br />
+
+    <!-- Tags -->
+    <div>
+        <span>Tags: </span>
+        <span class="label label-info r-tag" ng-repeat="tag in recipe.tags">{{tag}}</span>
+    </div>
+
+    <!-- Notes -->
+    <div ng-show="recpie.notes">
+        <br />
+        <span>Notes: </span><span>{{recipe.notes}}</span>
+    </div>
 </div>
 
 <div class="modal-footer">

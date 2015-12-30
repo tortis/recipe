@@ -30,7 +30,8 @@ server.use(function(req, res, next) {
     });
     next();
 });
-// server.use(restify.gzipResponse());
+
+server.get('/api/dash', handlers.dash.get);
 
 // Recipe resource
 server.post ( '/api/recipes'               , handlers.recipes.create);

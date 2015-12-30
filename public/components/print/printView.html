@@ -1,0 +1,43 @@
+<div class="container" style="font-family: monospace;">
+    <div class="row">
+        <div class="col-xs-2"><p class="text-right" style="margin: 0">Title:</p></div>
+        <div class="col-xs-10">{{recipe.name}}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2"><p class="text-right" style="margin: 0">Author:</div>
+        <div class="col-xs-10">{{recipe.author}}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2"><p class="text-right" style="margin: 0">Category:</div>
+        <div class="col-xs-10">{{recipe.category}}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2"><p class="text-right" style="margin: 0">Tags:</div>
+        <div class="col-xs-10"><span ng-repeat="tag in recipe.tags">{{tag}}{{$index !== recipe.tags.length-1 ? ',' : ''}} </span></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2"><p class="text-right" style="margin: 0">Servings:</div>
+        <div class="col-xs-10">{{recipe.yield}}</div>
+    </div>
+    <br />
+
+    <div ng-repeat="ingSec in recipe.ingredients" ng-show="ingSec.list.length > 0" class="container-fluid">
+        <div style="margin-bottom: 10px;" ng-if="ingSec.name"><strong>{{ingSec.name}}</strong></div>
+        <div ng-repeat="ing in ingSec.list" class="col-xs-6">
+            <span class="ing-qty">{{ing.qty}}</span>
+            <span class="ing-unit">{{ing.unit}}</span>
+            <span class="ing-name">{{ing.name}}</span>
+        </div>
+    </div>
+    <br />
+
+    <div ng-repeat="instSec in recipe.instructions">
+        <h3 ng-if="instSec.name">{{instSec.name}}</h3>
+        <div ng-repeat="c in instSec.contentPieces track by $index">
+            <p ng-if="c" class="r-no-m">{{c}}</p>
+            <p ng-if="!c" class="r-no-m">&nbsp;</p>
+        </div>
+    </div>
+
+</div>
+

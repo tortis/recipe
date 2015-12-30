@@ -31,7 +31,12 @@ html, body
 }
 
 .ing-name {
+}
 
+.recipe-item {
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 
 .r-no-m {
