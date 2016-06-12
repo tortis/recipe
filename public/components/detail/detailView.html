@@ -1,7 +1,11 @@
 <div class="modal-header">
-    <h3 class="modal-title" ng-if="!deleted">
+    <h3 class="modal-title" ng-if="!deleted && !editing">
         {{recipe.name}} <small style="color:#777">{{recipe.author}}</small>
-        <a href="" ng-click="print();" class="pull-right"><span class="glyphicon glyphicon-print"></span></a>
+        <a ng-href="/#/print/{{recipe.linkName}}" target="_blank" class="pull-right"><span class="glyphicon glyphicon-print"></span></a>
+    </h3>
+    <h3 class="modal-title" ng-if="editing">
+        <input type="text" ng-model="patch.name" placeholder="Title">
+        <small><input type="text" ng-model="patch.author" placeholder="Author"></small>
     </h3>
     <h3 class="modal-title" ng-if="deleted">Recipe Deleted</h3>
 </div>
@@ -13,14 +17,19 @@
 
 <div ng-if="!deleted" class="modal-body">
     <!-- Info -->
-    <div class="row">
+    <div class="row" ng-if="!editing">
         <div class="col-xs-6"><strong>category: </strong>{{recipe.category}}</div>
         <div class="col-xs-6"><strong>servings: </strong>{{recipe.yield}}</div>
+    </div>
+    <!-- Info Edit -->
+    <div class="row" ng-if="editing">
+        <div class="col-xs-6"><strong>category: </strong><input type="text" ng-model="patch.category"></div>
+        <div class="col-xs-6"><strong>servings: </strong><input type="text" ng-model="patch.yield"></div>
     </div>
     <br />
 
     <!-- Ingredients -->
-    <div ng-repeat="ingSec in recipe.ingredients" ng-show="ingSec.list.length > 0" class="well container-fluid">
+    <div ng-repeat="ingSec in recipe.ingredients" ng-show="ingSec.list.length > 0 && !editing" class="well container-fluid">
         <div style="margin-bottom: 10px;" ng-if="ingSec.name"><strong>{{ingSec.name}}</strong></div>
         <div ng-repeat="ing in ingSec.list" class="col-md-6">
             <span class="ing-qty">{{ing.qty}}</span>
@@ -28,27 +37,53 @@
             <span class="ing-name">{{ing.name}}</span>
         </div>
     </div>
+    <!-- Ingredietns Edit -->
+    <!-- <div ng-repeat="ingSec in recipe.ingredients" ng-show="ingSec.list.length > 0" class="well container-fluid">
+        <div style="margin-bottom: 10px;" ng-if="ingSec.name"><strong>{{ingSec.name}}</strong></div>
+        <div ng-repeat="ing in ingSec.list" class="col-md-6">
+            <span class="ing-qty">{{ing.qty}}</span>
+            <span class="ing-unit">{{ing.unit}}</span>
+            <span class="ing-name">{{ing.name}}</span>
+        </div>
+    </div>-->
 
     <!-- Instructions -->
-    <div ng-repeat="instSec in recipe.instructions">
+    <div ng-repeat="instSec in recipe.instructions" ng-if="!editing">
         <h3 ng-if="instSec.name">{{instSec.name}}</h3>
         <div ng-repeat="c in instSec.contentPieces track by $index">
             <p ng-if="c" class="r-no-m">{{c}}</p>
             <p ng-if="!c" class="r-no-m">&nbsp;</p>
         </div>
     </div>
+    <!-- Instructions Edit -->
+    <div ng-repeat="instSec in patch.instructions" ng-if="editing">
+        <textarea ng-model="instSec.content" class="form-control" rows="10"></textarea>
+    </div>
     <br />
 
     <!-- Tags -->
-    <div>
+    <div ng-if="!editing">
         <span>Tags: </span>
         <span class="label label-info r-tag" ng-repeat="tag in recipe.tags">{{tag}}</span>
     </div>
+    <!-- Tags Edit -->
+    <div class="form-group" ng-if="editing">
+        <label for="recipe-tags">Tags</label>
+        <div style="display: inline-block;">
+            <span ng-click="patch.tags.splice($index, 1);" ng-mouseenter="h = true;" ng-mouseleave="h=false;" ng-repeat="tag in patch.tags" class="label label-info r-tag">{{h ? 'Remove tag' : tag}}</span>
+        </div>
+        <input type="text" id="recipe-tags" ng-model="curTag" class="form-control" placeholder="Type a tag and press return" ng-enter="addTag(curTag)">
+    </div>
 
     <!-- Notes -->
-    <div ng-show="recpie.notes">
+    <div ng-show="recpie.notes && !editing">
         <br />
         <span>Notes: </span><span>{{recipe.notes}}</span>
+    </div>
+    <!-- Notes Edit -->
+    <div class="form-group" ng-if="editing">
+        <label for="recipe-notes">Notes</label>
+        <textarea id="recipe-notes" class="form-control" placeholder="notes..." ng-model="patch.notes"></textarea>
     </div>
 </div>
 
@@ -61,5 +96,6 @@
         <span class="glyphicon glyphicon-edit"></span> Edit
     </button>
     <button class="btn btn-primary" ng-show="!editing" ng-click="cancel()">Close</button>
-    <button class="btn btn-success" ng-show="editing" ng-click="editing = false">Save</button>
+    <button class="btn btn-warning" ng-show="editing" ng-click="editing = false">Cancel</button>
+    <button class="btn btn-success" ng-show="editing" ng-click="save()">Save</button>
 </div>

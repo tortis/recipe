@@ -12,6 +12,7 @@ RecipeControllers.controller('detailCtrl', ['$scope', '$location', '$modalInstan
                 recipe.instructions[i].contentPieces = recipe.instructions[i].content.split('\n');
             }
             $scope.recipe = recipe;
+            $scope.patch = angular.copy(recipe);
         }, function(err) {
             console.log(err);    
         });
@@ -29,9 +30,24 @@ RecipeControllers.controller('detailCtrl', ['$scope', '$location', '$modalInstan
             }
         };
 
-        $scope.print = function() {
-            $scope.cancel();
-            $location.path('/print/'+r.linkName);
+		$scope.addTag = function(tag) {
+            if ($scope.curTag == '') return;
+            $scope.patch.tags.push(tag);
+            $scope.curTag = '';
+		};
+
+        $scope.save = function() {
+            console.log('Recipe: %O', $scope.recipe);
+            console.log('Patch: %O', $scope.patch);
+            $scope.recipe = $scope.patch;
+            $scope.patch = angular.copy($scope.recipe);
+            console.log('Recipe after copy: %O', $scope.recipe);
+            Recipe.save($scope.patch, function(r) {
+                console.log('test');
+                $scope.editing = false;
+            }, function(err) {
+                console.log(err);
+            });
         };
 
         $scope.cancel = $modalInstance.close;

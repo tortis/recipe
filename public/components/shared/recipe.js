@@ -8,6 +8,9 @@ RecipeControllers.factory('Recipe', ['$resource',
             meta: {
                 method: 'GET',
                 url: '/api/recipes/meta'
+            },
+            save: {
+                method: 'PATCH'
             }
         });
 
