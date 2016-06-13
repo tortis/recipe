@@ -1,0 +1,87 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        <div class="col-xs-8">
+            <input class="form-control" type="text" ng-model="$ctrl.recipe.mod.name" placeholder="Title">
+        </div>
+        <div class="col-xs-4">
+            <small><input class="form-control" type="text" ng-model="$ctrl.recipe.mod.author" placeholder="Author"></small>
+        </div>
+    </h3>
+</div>
+
+<div class="modal-body">
+    <div class="form-horizontal">
+        <label class="col-sm-1 control-label">category: </label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" ng-model="$ctrl.recipe.mod.category" typeahead="category for category in $ctrl.meta.categories | filter:$viewValue | limitTo:8" required>
+        </div>
+        <label class="col-sm-1 control-label">servings: </label>
+        <div class="col-sm-5"><input type="text" class="form-control" ng-model="$ctrl.recipe.mod.yield"></div>
+    </div>
+    <div class="clearfix"></div>
+    <br />
+
+    <label class="control-form">Ingredients</label>
+    <div ng-repeat="ingSec in $ctrl.recipe.mod.ingredients" class="well container-fluid">
+        <div style="margin-bottom: 10px;" ng-if="ingSec.name"><strong>{{ingSec.name}}</strong></div>
+        <div ng-repeat="ing in ingSec.list" ng-show="ingSec.list.length > 0" class="col-md-6">
+            <span style="color:red" class="glyphicon glyphicon-remove clicky" ng-click="ingSec.list.splice($index, 1)" tooltip="Remove this ingredient"></span>
+            <span class="ing-qty">{{ing.qty}}</span>
+            <span class="ing-unit">{{ing.unit}}</span>
+            <span class="ing-name">{{ing.name}}</span>
+        </div>
+        <div ng-show="!ingSec.list || ingSec.list.length == 0">
+            <i>Add some ingredients</i>
+        </div>
+    </div>
+
+    <form ng-submit="$ctrl.addIngredient(0)">
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <div class="input-group">
+                    <span class="input-group-addon">Quantity</span>
+                    <input id="ing-qty" type="text" class="form-control" ng-model="$ctrl.newIngredient.qty">
+                </div>
+            </div>
+            <div class="form-group col-sm-3">
+                <div class="input-group">
+                    <span class="input-group-addon">Units</span>
+                    <input type="text" class="form-control" ng-model="$ctrl.newIngredient.unit" typeahead="unit for unit in $ctrl.meta.units | filter:$viewValue | limitTo:8">
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <div class="input-group">
+                    <span class="input-group-addon">Name</span>
+                    <input type="text" class="form-control" ng-model="$ctrl.newIngredient.name" typeahead="ing for ing in $ctrl.meta.ingredients | filter:$viewValue | limitTo:8" typeahead-focus-first="false">
+                    <span class="input-group-btn">
+                        <button class="btn btn-success">Add</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Instructions Edit -->
+    <div ng-repeat="instSec in $ctrl.recipe.mod.instructions">
+        <div class="form-group">
+            <label class="control-label">Instructions</label>
+            <textarea ng-model="instSec.content" class="form-control" rows="10"></textarea>
+        </div>
+    </div>
+
+    <!-- Tags Edit -->
+    <div class="form-group">
+        <label class="control-label">Tags</label>
+        <tags-edit tags="$ctrl.recipe.mod.tags" list="$ctrl.meta.tags"></tags-edit>
+    </div>
+
+    <!-- Notes Edit -->
+    <div class="form-group">
+        <label for="recipe-notes">Notes</label>
+        <textarea id="recipe-notes" class="form-control" placeholder="notes..." ng-model="$ctrl.recipe.mod.notes"></textarea>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <ng-transclude></ng-transclude>
+</div>

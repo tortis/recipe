@@ -3,7 +3,9 @@ angular.module('RecipeControllers').controller('dashCtrl', [
     '$location',
     '$modal',
     '$http',
-    function($scope, $location, $modal, $http) {
+    '$q',
+    'Recipe',
+    function($scope, $location, $modal, $http, $q, Recipe) {
         $http.get('/api/dash').then(function(resp) {
             $scope.favorites = resp.data.favorites;
             $scope.newest = resp.data.newest;
@@ -21,7 +23,16 @@ angular.module('RecipeControllers').controller('dashCtrl', [
                 animation: true,
                 size: 'lg',
                 resolve: {
-                    r: function() { return r; }
+                    r: function() {
+                        var deferred = $q.defer();
+                        Recipe.get({}, r, function(recipe) {
+                            for (var i = 0; i < recipe.instructions.length; i++) {
+                                recipe.instructions[i].contentPieces = recipe.instructions[i].content.split('\n');
+                            }
+                            deferred.resolve(recipe);
+                        });
+                        return deferred.promise;
+                    }
                 }
             })
             .result.then(function() {});

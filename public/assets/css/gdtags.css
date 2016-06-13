@@ -1,0 +1,34 @@
+.gd-tags {
+  padding: 1px;
+  display: flex;
+}
+
+.gd-tags > div {
+  display: flex;
+  align-items: center;
+  border: 0px solid black;
+  padding: 0 4px 0 4px;
+  height: 100%;
+}
+
+
+.gd-tags > div > span {
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.gd-tags > div > span:hover {
+    background-color: red;
+}
+
+.gd-tags > input {
+  display: inline-block;
+  border: 0px solid black;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.gd-tags > input:focus {
+  outline: none;
+}
