@@ -10,7 +10,7 @@ mongoose.Promise = require('bluebird');
 var handlers = require('./handlers');
 
 // Connect to mongodb
-mongoose.connect('mongodb://findley.recipes/recipe');
+mongoose.connect('mongodb://localhost/recipe');
 
 // Create a restify server
 var server = restify.createServer({
