@@ -1,9 +1,11 @@
 angular.module('RecipeControllers').controller('searchCtrl', [
     '$scope',
+    '$q',
     '$location',
     '$modal',
     'recipeListMgr',
-    function($scope, $location, $modal, RLM) {
+    'Recipe',
+    function($scope, $q, $location, $modal, RLM, Recipe) {
         RLM.addListener(function() {
             $scope.recipes = RLM.list;
             $scope.stats = RLM.stats;
@@ -31,8 +33,18 @@ angular.module('RecipeControllers').controller('searchCtrl', [
                 controller: 'detailCtrl',
                 animation: true,
                 size: 'lg',
+                backdrop: 'static',
                 resolve: {
-                    r: function() { return r; }
+                    r: function() {
+                        var deferred = $q.defer();
+                        Recipe.get({}, r, function(recipe) {
+                            for (var i = 0; i < recipe.instructions.length; i++) {
+                                recipe.instructions[i].contentPieces = recipe.instructions[i].content.split('\n');
+                            }
+                            deferred.resolve(recipe);
+                        });
+                        return deferred.promise;
+                    }
                 }
             })
             .result.then(function() {});

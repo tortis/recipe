@@ -1,4 +1,10 @@
-var RecipeApp = angular.module('RecipeApp', ['ngRoute', 'RecipeControllers']);
+var RecipeApp = angular.module('RecipeApp', [
+    'ui.bootstrap',
+    'ngRoute',
+    'RecipeControllers',
+    'recipe.edit',
+    'recipe.tags'
+]);
 
 RecipeApp.config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider) {

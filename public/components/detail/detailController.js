@@ -3,19 +3,18 @@ var RecipeControllers = angular.module('RecipeControllers');
 RecipeControllers.controller('detailCtrl', ['$scope', '$location', '$modalInstance', 'Recipe', 'r',
     function($scope, $location, $modalInstance, Recipe, r) {
         // Use the list data until the full recipe is loaded
-        $scope.recipe = r;
+        // $scope.recipe = r;
         $scope.deleteConfirm = false;
         $scope.editing = false;
+        $scope.recipe = r;
 
-        Recipe.get({}, r, function(recipe) {
-            for (var i = 0; i < recipe.instructions.length; i++) {
-                recipe.instructions[i].contentPieces = recipe.instructions[i].content.split('\n');
-            }
-            $scope.recipe = recipe;
-            $scope.patch = angular.copy(recipe);
-        }, function(err) {
-            console.log(err);    
-        });
+        $scope.startEditing = function() {
+            $scope.editing = true;
+        };
+
+        $scope.stopEditing = function() {
+            $scope.editing = false;
+        };
 
         $scope.delete = function() {
             $scope.deletedRName = $scope.recipe.name;
@@ -30,20 +29,13 @@ RecipeControllers.controller('detailCtrl', ['$scope', '$location', '$modalInstan
             }
         };
 
-		$scope.addTag = function(tag) {
-            if ($scope.curTag == '') return;
-            $scope.patch.tags.push(tag);
-            $scope.curTag = '';
-		};
-
         $scope.save = function() {
-            console.log('Recipe: %O', $scope.recipe);
-            console.log('Patch: %O', $scope.patch);
-            $scope.recipe = $scope.patch;
-            $scope.patch = angular.copy($scope.recipe);
             console.log('Recipe after copy: %O', $scope.recipe);
-            Recipe.save($scope.patch, function(r) {
-                console.log('test');
+            Recipe.save($scope.recipe.mod, function(r) {
+                $scope.recipe = $scope.recipe.mod;
+                for (var i = 0; i < $scope.recipe.instructions.length; i++) {
+                    $scope.recipe.instructions[i].contentPieces = $scope.recipe.instructions[i].content.split('\n');
+                }
                 $scope.editing = false;
             }, function(err) {
                 console.log(err);
