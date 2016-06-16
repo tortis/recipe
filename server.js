@@ -8,6 +8,7 @@ var restify  = require('restify');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 var handlers = require('./handlers');
+var middleware = require('./middleware');
 
 // Connect to mongodb
 mongoose.connect('mongodb://localhost/recipe');
@@ -34,14 +35,17 @@ server.use(function(req, res, next) {
 server.get('/api/dash', handlers.dash.get);
 
 // Recipe resource
-server.post ( '/api/recipes'               , handlers.recipes.create);
-server.get  ( '/api/recipes/meta'          , handlers.recipes.meta);
-server.get  ( '/api/recipes/typeahead/:pre', handlers.recipes.typeahead);
-server.patch( '/api/recipes/:id'           , handlers.recipes.update);
-server.del  ( '/api/recipes/:id'           , handlers.recipes.delete);
-server.get  ( '/api/recipes/:id'           , handlers.recipes.get);
-server.get  ( '/api/recipes'               , handlers.recipes.search);
-server.get  ( '/api/recipes/:id/print'     , handlers.recipes.print);
+server.post ('/api/recipes'               , middleware.authenticated, handlers.recipes.create);
+server.get  ('/api/recipes/meta'          , handlers.recipes.meta);
+server.get  ('/api/recipes/typeahead/:pre', handlers.recipes.typeahead);
+server.patch('/api/recipes/:id'           , middleware.authenticated, handlers.recipes.update);
+server.del  ('/api/recipes/:id'           , middleware.authenticated, handlers.recipes.delete);
+server.get  ('/api/recipes/:id'           , handlers.recipes.get);
+server.get  ('/api/recipes'               , handlers.recipes.search);
+server.get  ('/api/recipes/:id/print'     , handlers.recipes.print);
+
+server.post ('/api/authenticate',   handlers.authenticate.authenticate);
+server.post ('/api/changepassword', middleware.authenticated, handlers.authenticate.changePassword);
 
 // Static file handler
 server.get( '/.*', restify.serveStatic({

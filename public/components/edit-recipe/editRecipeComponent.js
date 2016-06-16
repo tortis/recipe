@@ -5,7 +5,8 @@
     .component('editRecipe', {
         transclude: true,
         bindings: {
-            recipe: '=?'
+            recipe: '=?',
+            errors: '=?'
         },
         controller: ['Recipe', function(Recipe) {
             var self = this;
@@ -17,6 +18,7 @@
                     mod: {
                         name: '',
                         author: '',
+                        category: '',
                         tags: [],
                         ingredients: [{list: []}],
                         instructions: [{content: ''}]

@@ -1,22 +1,25 @@
 <div class="modal-header">
-    <h3 class="modal-title">
-        <div class="col-xs-8">
-            <input class="form-control" type="text" ng-model="$ctrl.recipe.mod.name" placeholder="Title">
-        </div>
-        <div class="col-xs-4">
-            <small><input class="form-control" type="text" ng-model="$ctrl.recipe.mod.author" placeholder="Author"></small>
-        </div>
-    </h3>
+    <div class="form-group col-xs-8" ng-class="{'has-error': $ctrl.errors.name}" style="margin-bottom: 0">
+        <input class="form-control" type="text" ng-model="$ctrl.recipe.mod.name" placeholder="Title">
+        <span class="help-block" ng-show="$ctrl.errors.name" style="margin-bottom: 0">{{$ctrl.errors.name}}</span>
+    </div>
+    <div class="form-group col-xs-4" ng-class="{'has-error': $ctrl.errors.author}" style="margin-bottom: 0">
+        <input class="form-control" type="text" ng-model="$ctrl.recipe.mod.author" placeholder="Author">
+        <span class="help-block" ng-show="$ctrl.errors.author" style="margin-bottom: 0">{{$ctrl.errors.author}}</span>
+    </div>
 </div>
 
 <div class="modal-body">
     <div class="form-horizontal">
-        <label class="col-sm-1 control-label">category: </label>
-        <div class="col-sm-5">
-            <input type="text" class="form-control" ng-model="$ctrl.recipe.mod.category" typeahead="category for category in $ctrl.meta.categories | filter:$viewValue | limitTo:8" required>
+        <div class="form-group" ng-class="{'has-error': $ctrl.errors.category}">
+            <label class="col-sm-1 control-label">category: </label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" ng-model="$ctrl.recipe.mod.category" typeahead="category for category in $ctrl.meta.categories | filter:$viewValue | limitTo:8" required>
+                <span class="help-block" ng-show="$ctrl.errors.category" style="margin-bottom: 0">{{$ctrl.errors.category}}</span>
+            </div>
+            <label class="col-sm-1 control-label">servings: </label>
+            <div class="col-sm-5"><input type="text" class="form-control" ng-model="$ctrl.recipe.mod.yield"></div>
         </div>
-        <label class="col-sm-1 control-label">servings: </label>
-        <div class="col-sm-5"><input type="text" class="form-control" ng-model="$ctrl.recipe.mod.yield"></div>
     </div>
     <div class="clearfix"></div>
     <br />

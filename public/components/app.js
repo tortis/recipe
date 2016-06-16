@@ -6,8 +6,8 @@ var RecipeApp = angular.module('RecipeApp', [
     'recipe.tags'
 ]);
 
-RecipeApp.config(['$routeProvider', '$locationProvider',
-    function($routeProvider, $locationProvider) {
+RecipeApp.config(['$routeProvider', '$locationProvider', '$httpProvider',
+    function($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
         .when('/', {
             templateUrl: '/components/dash/dashView.html',
@@ -25,6 +25,8 @@ RecipeApp.config(['$routeProvider', '$locationProvider',
         .otherwise({
             templateUrl: '/components/errors/notFoundView.html'
         });
+
+        $httpProvider.interceptors.push('TokenInterceptor');
     }
 ]);
 
@@ -36,16 +38,30 @@ RecipeApp.run(['$rootScope', 'recipeListMgr',
     }
 ]);
 
+RecipeApp.factory('TokenInterceptor', ['$window', function($window) {
+    return {
+        request: function(config) {
+            var token = $window.localStorage.getItem('token');
+            if (token) {
+                config.headers.Authorization = 'Bearer ' + token;
+            }
+            return config;
+        }
+    };
+}]);
+
 var RecipeControllers = angular.module('RecipeControllers', ['ui.bootstrap', 'ngResource']);
 
 RecipeControllers.controller('mainCtrl', [
     '$scope',
+    '$window',
     '$location',
     '$http',
     '$modal',
     'recipeListMgr',
-    function($scope, $location, $http, $modal, RLM) {
+    function($scope, $window, $location, $http, $modal, RLM) {
         document.getElementById('search').focus();
+
         $scope.openNewRecipe = function() {
             $modal.open({
                 templateUrl: '/components/shared/new_recipe/newRecipeView.html',
@@ -54,6 +70,46 @@ RecipeControllers.controller('mainCtrl', [
                 size: 'lg'
             })
             .result.then(function() {});
+        };
+
+        var loadAuthentication = function() {
+            var token = $window.localStorage.getItem('token');
+            if (!token) return;
+            var pieces = token.split('.');
+            var tokenBody = JSON.parse(atob(pieces[1]));
+            var exp = tokenBody.exp;
+            if ((Date.now() / 1000) < exp) {
+                $scope.authenticated = true;
+            }
+        };
+        loadAuthentication();
+
+        $scope.authenticate = function() {
+            $modal.open({
+                templateUrl: '/components/shared/authenticate/authenticate-view.html',
+                controller: 'authenticateController',
+                animation: true,
+                size: 'sm'
+            })
+            .result.then(function(success) {
+                if (success) {
+                    $scope.authenticated = true;
+                }
+            });
+        };
+
+        $scope.openChangePassword = function() {
+            $modal.open({
+                templateUrl: '/components/shared/changepassword/change-password-view.html',
+                controller: 'changePasswordController',
+                animation: true,
+                size: 'sm'
+            }).result.then(function() {});
+        };
+
+        $scope.signout = function() {
+            $scope.authenticated = false;
+            $window.localStorage.removeItem('token');
         };
 
         $scope.search = function(q) {
