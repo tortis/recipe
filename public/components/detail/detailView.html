@@ -58,13 +58,15 @@
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-danger pull-left" ng-show="!deleted" ng-click="delete()" ng-blur="deleteConfirm = false">
-            <span class="glyphicon glyphicon-trash"></span> 
-            {{deleteConfirm ? 'Really?' : 'Delete'}}
-        </button>
-        <button class="btn btn-default pull-left" ng-show="!deleted" ng-click="startEditing()">
-            <span class="glyphicon glyphicon-edit"></span> Edit
-        </button>
+        <div class="pull-left" ng-show="authenticated">
+            <button class="btn btn-danger" ng-show="!deleted" ng-click="delete()" ng-blur="deleteConfirm = false">
+                <span class="glyphicon glyphicon-trash"></span> 
+                {{deleteConfirm ? 'Really?' : 'Delete'}}
+            </button>
+            <button class="btn btn-default" ng-show="!deleted" ng-click="startEditing()">
+                <span class="glyphicon glyphicon-edit"></span> Edit
+            </button>
+        </div>
         <button class="btn btn-default" ng-click="cancel()">Close</button>
     </div>
 </div>

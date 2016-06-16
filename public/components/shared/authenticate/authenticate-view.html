@@ -1,0 +1,14 @@
+<div class="modal-body">
+    <div class="alert alert-danger" ng-show="error">{{error}}</div>
+    <form ng-submit="login()">
+        <div class="form-group">
+            <label class="control-label">Password</label>
+            <input type="password" ng-model="password" class="form-control">
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-success" ng-click="login()">Login</button>
+    <button class="btn btn-default pull-left" ng-click="close()">Close</button>
+</div>

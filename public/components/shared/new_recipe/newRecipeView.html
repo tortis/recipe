@@ -1,4 +1,4 @@
-<edit-recipe ng-if="!done">
+<edit-recipe errors="errors" ng-if="!done">
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     <button class="btn btn-success" ng-click="save($parent.$ctrl.recipe.mod)">Save</button>
 </edit-recipe>

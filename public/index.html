@@ -19,7 +19,7 @@
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="node_modules/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     
-    <script src="recipe.js"></script>
+    <script src="recipe.es5.js"></script>
 
 </head>
 <body ng-controller="mainCtrl">
@@ -35,7 +35,15 @@
                 <a class="navbar-brand" href="/#/">Findley Recipes</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <button type="button" class="btn btn-success navbar-btn" ng-click="openNewRecipe()"><span class="glyphicon glyphicon-plus"></span> New</button>
+                <button ng-if="authenticated" type="button" class="btn btn-success navbar-btn" ng-click="openNewRecipe()"><span class="glyphicon glyphicon-plus"></span> New</button>
+                <div class="btn-group" ng-show="authenticated" dropdown>
+                    <button type="button" class="btn btn-default" ng-click="signout()"><span class="glyphicon glyphicon-off"></span> Sign out</button>
+                    <button type="button" class="btn btn-default" dropdown-toggle><span class="caret"> </span></button>
+                    <ul class="dropdown-menu" dropdown-menu>
+                        <li><a href="javascript:void(0)" ng-click="openChangePassword()">Change password</a></li>
+                    </ul>
+                </div>
+                <button ng-if="!authenticated" type="button" class="btn btn-success navbar-btn" ng-click="authenticate()"><span class="glyphicon glyphicon-ok"></span> Authenticate</button>
                 <form class="navbar-form navbar-right" ng-submit="search(q)">
                 <div class="input-group">
                     <input id="search" type="text" ng-enter="search(q)" placeholder="search" ng-model="q" ng-change="typeAhead(q)" typeahead="opt for opt in getNames($viewValue) | limitTo:8" typeahead-min-length="2" typeahead-wait-ms="250" typeahead-focus-first="false" class="form-control">

@@ -12,10 +12,20 @@ module.exports = function(grunt) {
                 dest: 'recipe.js'
             }
         },
+        babel: {
+            options: {
+                presets: ['es2015']
+            },
+            dist: {
+                files: {
+                    'recipe.es5.js': 'recipe.js'
+                }
+            }
+        },
         uglify: {
             dist: {
                 files: {
-                    'recipe.min.js': ['recipe.js']
+                    'recipe.min.js': ['recipe.es5.js']
                 }
             }
         }
@@ -23,6 +33,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-babel');
 
-    grunt.registerTask('default', ['concat', 'uglify']);
+    grunt.registerTask('default', ['concat', 'babel', 'uglify']);
 };

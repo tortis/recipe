@@ -34,6 +34,7 @@ angular.module('RecipeControllers').controller('searchCtrl', [
                 animation: true,
                 size: 'lg',
                 backdrop: 'static',
+                scope: $scope,
                 resolve: {
                     r: function() {
                         var deferred = $q.defer();

@@ -21,6 +21,7 @@ angular.module('RecipeControllers').controller('dashCtrl', [
                 templateUrl: '/components/detail/detailView.html',
                 controller: 'detailCtrl',
                 animation: true,
+                scope: $scope,
                 size: 'lg',
                 resolve: {
                     r: function() {
